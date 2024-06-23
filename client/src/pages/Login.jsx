@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
+import { server } from '../main';
 
 
 function Login() {
@@ -33,8 +34,7 @@ function Login() {
             <h1>Login</h1>
             <form action="">
                 <input required type="text" placeholder='Username' name='username' onChange={handleChange}/>
-                <input required type="email" placeholder='Email' name='password' onChange={handleChange}/>
-                <input required type="password" placeholder='Password'/>
+                <input required type="password" placeholder='Password' name='password' onChange={handleChange}/>
                 <button onClick={handleSubmit}>Login</button>
                 {err && <p>{err}</p>}
                 <span>
