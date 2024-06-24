@@ -12,10 +12,11 @@ function Navbar() {
       <div className="navbar">
         <div className="container">
           <div className="logo">
-            <img src={Logo} alt="" />
+            <Link>
+              <img src={Logo} alt="" />
+            </Link>
           </div>
           <div className="links">
-
             <Link className="link" to="/?cat=art">
               <h6>ART</h6>
             </Link>
@@ -38,7 +39,7 @@ function Navbar() {
             <span>{currentUser?.username}</span>
 
             {currentUser ? (
-              <span onClick={(e)=>logout(e)}>Logout</span>
+              <span onClick={(e) => logout(e)}>Logout</span>
             ) : (
               <Link className="link" to="/login">
                 Login
@@ -50,7 +51,6 @@ function Navbar() {
                 Write
               </Link>
             </span>
-
           </div>
         </div>
       </div>
