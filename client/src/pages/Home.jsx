@@ -1,15 +1,18 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
+import {server} from "../main.jsx"
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
+
+  const cat = useLocation().search
 
   useEffect(() => {
 
     const fetchData = async () => {
       try {
-        const res = await axios.get("/posts");
+        const res = await axios.get(`${server}/posts/${cat}`);
           setPosts(res.data);
       } catch (error) {
           console.log(error);
@@ -17,7 +20,7 @@ const Home = () => {
     };
 
     fetchData();
-  }, []);
+  }, [cat]);
 
 
 
@@ -52,8 +55,7 @@ const Home = () => {
   return (
     <div className="home">
       <div className="posts">
-        {/* {Array.isArray(posts) && posts.length > 0 ? ( */}
-          {posts.map((post) => (
+        {posts.map((post) => (
             <div className="post" key={post.id}>
               <div className="img">
                 <img src={post.img} alt="" />
@@ -68,9 +70,6 @@ const Home = () => {
             </div>
           ))
           }
-        {/* ) : (
-          <p>No posts available.</p>
-        )} */}
       </div>
     </div>
   );

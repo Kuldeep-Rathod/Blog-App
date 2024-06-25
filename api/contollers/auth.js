@@ -37,36 +37,66 @@ export const register = (req, res) => {
 };
 
 
+// export const login = (req, res) => {
+//     //CHECK USER
+
+//     const q = "SELECT * FROM users WHERE username = ?";
+
+//     db.query(q, [req.body.username], (err, data) => {
+//         if (err) {
+//             console.error("Error querying the database:", err);
+//             return res.status(500).json({ error: "Database query error" });
+//         }
+//         if (data.length === 0) return res.status(404).json("User not found!");
+
+//         //CHECK PASSWORD
+//         const isCorrectPassword = bcrypt.compareSync(req.body.password, data[0].password);
+
+//         if (!isCorrectPassword) return res.status(400).json("Wrong username or password!")
+
+//         const token = jwt.sign({ id: data[0].id }, "jwtkey");
+//         const { password, ...other } = data[0];
+
+//         // console.log(token)
+
+//         res.status(200).cookie("access_token", token, {
+//             httpOnly: "true",
+//             secure:"true", // Set to true if you're using HTTPS
+//             sameSite: "none",
+//         }).json(other);
+
+//     });
+// };
+
+
+
 export const login = (req, res) => {
-    //CHECK USER
+  const q = "SELECT * FROM users WHERE username = ?";
 
-    const q = "SELECT * FROM users WHERE username = ?";
+  db.query(q, [req.body.username], (err, data) => {
+    if (err) {
+      console.error("Error querying the database:", err);
+      return res.status(500).json({ error: "Database query error" });
+    }
+    if (data.length === 0) return res.status(404).json("User not found!");
 
-    db.query(q, [req.body.username], (err, data) => {
-        if (err) {
-            console.error("Error querying the database:", err);
-            return res.status(500).json({ error: "Database query error" });
-        }
-        if (data.length === 0) return res.status(404).json("User not found!");
+    // Check password
+    const isCorrectPassword = bcrypt.compareSync(req.body.password, data[0].password);
+    if (!isCorrectPassword) return res.status(400).json("Wrong username or password!");
 
-        //CHECK PASSWORD
-        const isCorrectPassword = bcrypt.compareSync(req.body.password, data[0].password);
+    const token = jwt.sign({ id: data[0].id }, "jwtkey");
+    const { password, ...other } = data[0];
 
-        if (!isCorrectPassword) return res.status(400).json("Wrong username or password!")
+    const isProduction = process.env.NODE_ENV === 'production';
 
-        const token = jwt.sign({ id: data[0].id }, "jwtkey");
-        const { password, ...other } = data[0];
-
-        // console.log(token)
-
-        res.status(200).cookie("access_token", token, {
-            httpOnly: "true",
-            secure:"true", // Set to true if you're using HTTPS
-            sameSite: "none",
-        }).json(other);
-
-    });
+    res.status(200).cookie("access_token", token, {
+      httpOnly: true,
+      secure: isProduction, // Set to true if you're using HTTPS
+      sameSite: isProduction ? 'strict' : 'lax',
+    }).json(other);
+  });
 };
+
 
 export const logout = (req, res) => {
     res.clearCookie("access_token", {
