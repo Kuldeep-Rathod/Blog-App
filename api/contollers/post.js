@@ -1,5 +1,5 @@
-import jwt from 'jsonwebtoken';
-import {db} from '../db.js'; // Ensure correct import for db
+import jwt from "jsonwebtoken";
+import { db } from "../db.js"; // Ensure correct import for db
 
 export const getPosts = (req, res) => {
   try {
@@ -27,7 +27,7 @@ export const getPost = (req, res) => {
       p.title, 
       p.description, 
       p.img,
-
+      p.id,
       p.cat,
       p.date 
     FROM users u 
@@ -52,22 +52,48 @@ export const getPost = (req, res) => {
 };
 
 export const addPost = (req, res) => {
-  res.json("from controller");
-};
-
-
-
-export const deletePost = (req, res) => {
   const token = req.cookies.access_token;
-  console.log(token)
+
   if (!token) {
-    console.log("No token found in cookies");
     return res.status(401).json("Not authenticated user!");
   }
 
   jwt.verify(token, "jwtkey", (err, userInfo) => {
     if (err) {
-      console.log("Token verification failed:", err);
+      return res.status(403).json("Token is not valid!");
+    }
+
+    const q =
+      "INSERT INTO posts (`title`, `description`, `img`, `cat`, `date`, `uid`) VALUES (?)";
+
+    const values = [
+      req.body.title,
+      req.body.description,
+      req.body.img,
+      req.body.cat,
+      req.body.date,
+      userInfo.id,
+    ];
+
+    db.query(q, [values], (err, data) => {
+      if (err) {
+        console.error("Database query error:", err);
+        return res.status(500).send(err);
+      }
+      return res.json("post has been created.");
+    });
+  });
+};
+
+export const deletePost = (req, res) => {
+  const token = req.cookies.access_token;
+
+  if (!token) {
+    return res.status(401).json("Not authenticated user!");
+  }
+
+  jwt.verify(token, "jwtkey", (err, userInfo) => {
+    if (err) {
       return res.status(403).json("Token is not valid!");
     }
 
@@ -85,7 +111,35 @@ export const deletePost = (req, res) => {
   });
 };
 
-
 export const updatePost = (req, res) => {
-  res.json("from controller");
+  const token = req.cookies.access_token;
+
+  if (!token) {
+    return res.status(401).json("Not authenticated user!");
+  }
+
+  jwt.verify(token, "jwtkey", (err, userInfo) => {
+    if (err) {
+      return res.status(403).json("Token is not valid!");
+    }
+
+    const postId = req.params.id
+    const q =
+      "UPDATA posts SET `title`=?, `description`=?, `img`=?, `cat`=? WHERE `id` = ? AND `uid` = ?";
+
+    const values = [
+      req.body.title,
+      req.body.description,
+      req.body.img,
+      req.body.cat,
+    ];
+
+    db.query(q, [...values, postId, userInfo.id], (err, data) => {
+      if (err) {
+        console.error("Database query error:", err);
+        return res.status(500).send(err);
+      }
+      return res.json("post has been updated.");
+    });
+  });
 };
