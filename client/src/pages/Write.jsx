@@ -4,8 +4,10 @@ import "react-quill/dist/quill.snow.css";
 import { useState } from "react";
 import axios from "axios";
 import { server } from "../main";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import moment from "moment";
+import Cookies from "js-cookie";
+
 
 function Write() {
   const state = useLocation().state;
@@ -13,6 +15,8 @@ function Write() {
   const [value, setValue] = useState(state?.description || "");
   const [file, setFile] = useState(null);
   const [cat, setCat] = useState(state?.cat || "");
+
+  const navigate = useNavigate();
 
   const upload = async () => {
     try {
@@ -30,30 +34,40 @@ function Write() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // console.log(Cookies.get("access_token"))
     try {
       // Assuming 'upload' is an asynchronous function
       const imgUrl = file ? await upload() : "";
       if (state) {
         // Update existing post using PUT
-        await axios.put(`/posts/${state.id}`, {
+        await axios.put(`${server}/posts/${state.id}`, {
           title,
           description: value,
           cat,
           img: file ? imgUrl : "",
+        },{
+          withCredentials: true,
         });
       } else {
         // Create new post using POST
-        await axios.post(`/posts/`, {
+        await axios.post(`${server}/posts/`, {
           title,
           description: value,
           cat,
           img: file ? imgUrl : "",
           date: moment().format("YYYY-MM-DD HH:mm:ss"),
+        },{
+          withCredentials: true,
         });
       }
+      navigate("/")
     } catch (err) {
-      console.log("Upload failed", err);
+      // console.log("Upload failed", err);
+      if(err.response.status===401){
+        navigate("/login")
+      }
     }
+
   };
   
 
