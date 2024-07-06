@@ -125,7 +125,7 @@ export const updatePost = (req, res) => {
 
     const postId = req.params.id
     const q =
-      "UPDATA posts SET `title`=?, `description`=?, `img`=?, `cat`=? WHERE `id` = ? AND `uid` = ?";
+      "UPDATE posts SET `title`=?, `description`=?, `img`=?, `cat`=? WHERE `id` = ? AND `uid` = ?";
 
     const values = [
       req.body.title,
