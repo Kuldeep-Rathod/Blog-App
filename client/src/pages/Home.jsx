@@ -69,7 +69,7 @@ const Home = () => {
                   <h1>{post.title}</h1>
                 </Link>
                 <p>{getText(post.description)}</p>
-                <button>Read more</button>
+                {/* <button>Read more</button> */}
               </div>
             </div>
           ))
