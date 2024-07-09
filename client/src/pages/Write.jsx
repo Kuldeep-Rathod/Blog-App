@@ -16,6 +16,8 @@ function Write() {
   const [url, setUrl] = useState("");
   const [cat, setCat] = useState(state?.cat || "");
 
+  const token = localStorage.getItem("token");
+
   const navigate = useNavigate();
 
   // const upload = async () => {
@@ -51,7 +53,7 @@ function Write() {
           },
           {
             headers: {
-              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
             },
             withCredentials: true,
           }
@@ -69,7 +71,7 @@ function Write() {
           },
           {
             headers: {
-              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
             },
             withCredentials: true,
           }
