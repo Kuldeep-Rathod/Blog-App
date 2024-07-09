@@ -89,8 +89,8 @@ export const login = (req, res) => {
     res
       .status(200)
       .cookie("access_token", token, {
-        httpOnly: true,
-        secure: isProduction, // Set to true if you're using HTTPS
+        httpOnly: false,
+        secure: true, // Set to true if you're using HTTPS
         sameSite: isProduction ? "strict" : "lax",
       })
       .json(other);

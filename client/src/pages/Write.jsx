@@ -8,68 +8,75 @@ import { useLocation, useNavigate } from "react-router-dom";
 import moment from "moment";
 import Cookies from "js-cookie";
 
-
 function Write() {
   const state = useLocation().state;
   const [title, setTitle] = useState(state?.title || "");
   const [value, setValue] = useState(state?.description || "");
-  const [file, setFile] = useState(null);
+  // const [file, setFile] = useState(null);
+  const [url, setUrl] = useState("");
   const [cat, setCat] = useState(state?.cat || "");
 
   const navigate = useNavigate();
 
-  const upload = async () => {
-    try {
-      const formData = new FormData();
-      formData.append("file", file);
-      const res = await axios.post(`${server}/upload`, formData, {
-        withCredentials: true,
-      });
-      console.log(res.data);
-      return res.data;
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  // const upload = async () => {
+  //   try {
+  //     const formData = new FormData();
+  //     formData.append("file", file);
+  //     const res = await axios.post(`${server}/upload`, formData, {
+  //       withCredentials: true,
+  //     });
+  //     console.log(res.data);
+  //     return res.data;
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     // console.log(Cookies.get("access_token"))
     try {
       // Assuming 'upload' is an asynchronous function
-      const imgUrl = file ? await upload() : "";
+      // const imgUrl = file ? await upload() : "";
+      console.log(url);
       if (state) {
         // Update existing post using PUT
-        await axios.put(`${server}/posts/${state.id}`, {
-          title,
-          description: value,
-          cat,
-          img: file ? imgUrl : "",
-        },{
-          withCredentials: true,
-        });
+        await axios.put(
+          `${server}/posts/${state.id}`,
+          {
+            title,
+            description: value,
+            cat,
+            // img: file ? imgUrl : "",
+          },
+          {
+            withCredentials: true,
+          }
+        );
       } else {
         // Create new post using POST
-        await axios.post(`${server}/posts/`, {
-          title,
-          description: value,
-          cat,
-          img: file ? imgUrl : "",
-          date: moment().format("YYYY-MM-DD HH:mm:ss"),
-        },{
-          withCredentials: true,
-        });
+        await axios.post(
+          `${server}/posts/`,
+          {
+            title,
+            description: value,
+            cat,
+            // img: file ? imgUrl : "",
+            date: moment().format("YYYY-MM-DD HH:mm:ss"),
+          },
+          {
+            withCredentials: true,
+          }
+        );
       }
-      navigate("/")
+      navigate("/");
     } catch (err) {
       // console.log("Upload failed", err);
-      if(err.response.status===401){
-        navigate("/login")
+      if (err.response.status === 401) {
+        navigate("/login");
       }
     }
-
   };
-  
 
   //   console.log(value);
   return (
@@ -94,14 +101,24 @@ function Write() {
           <span>
             <b>Visibility: </b> Public
           </span>
-          <input
+          {/* <input
             style={{ display: "none" }}
             type="file"
             name=""
             id="file"
             onChange={(e) => setFile(e.target.files[0])}
+          /> */}
+
+          {/* <label htmlFor="file">Upload Image</label> */}
+
+          <label htmlFor="img">Image URL</label>
+          <input
+            type="url"
+            id="img"
+            required
+            onChange={(e) => setUrl(e.target.value)}
           />
-          <label htmlFor="file">Upload Image</label>
+
           <div className="buttons">
             <button>Save as a draft</button>
             <button onClick={handleSubmit}>Publish</button>
