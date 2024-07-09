@@ -11,8 +11,6 @@ import { server } from "../main.jsx";
 const Single = () => {
   const [post, setPost] = useState([]);
 
-  const token = localStorage.getItem("token");
-
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -38,9 +36,6 @@ const Single = () => {
     e.preventDefault();
     try {
       await axios.delete(`${server}/posts/${postId}`, {
-        headers: {
-          Authorization: "Bearer " + token,
-        },
         withCredentials: true,
       });
       navigate("/");
@@ -50,11 +45,11 @@ const Single = () => {
     }
   };
 
-  const getText = (html) => {
-    const doc = new DOMParser().parseFromString(html, "text/html");
-    return doc.body.textContent;
-  };
-
+  const getText = (html) =>{
+    const doc = new  DOMParser().parseFromString(html, "text/html")
+    return doc.body.textContent
+  }
+  
   return (
     <div className="single">
       <div className="content">
@@ -77,7 +72,7 @@ const Single = () => {
         <h1>{post.title}</h1>
         <p>{getText(post.description)}</p>
       </div>
-      <Menu cat={post.cat} />
+      <Menu cat={post.cat}/>
     </div>
   );
 };

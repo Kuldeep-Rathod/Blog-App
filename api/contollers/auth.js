@@ -81,22 +81,19 @@ export const login = (req, res) => {
     if (!isCorrectPassword)
       return res.status(400).json("Wrong username or password!");
 
-    const token = jwt.sign({ id: data[0].id }, "jwtkey", { expiresIn: "1h" });
+    const token = jwt.sign({ id: data[0].id }, "jwtkey");
     const { password, ...other } = data[0];
 
     const isProduction = process.env.NODE_ENV === "production";
 
-    res.status(200).json({token: token, other: other})
-    // res
-    //   .status(200)
-    //   .cookie("access_token", token, {
-    //     httpOnly: true,
-    //     secure: false, // Set to true if you're using HTTPS
-    //     // secure: isProduction ? true : false,
-    //     // sameSite: isProduction ? "strict" : "lax",
-    //     sameSite: "lax"
-    //   })
-    //   .json(other);
+    res
+      .status(200)
+      .cookie("access_token", token, {
+        httpOnly: true,
+        secure: isProduction, // Set to true if you're using HTTPS
+        sameSite: isProduction ? "strict" : "lax",
+      })
+      .json(other);
   });
 };
 

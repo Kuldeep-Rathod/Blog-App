@@ -13,15 +13,7 @@ export const AuthContextProvider = ({ children }) => {
     const res = await axios.post(`${server}/auth/login`, inputs, {
       withCredentials: true,
     });
-    localStorage.setItem("token", res.data.token)
-
-    const remainingMilliseconds = 60 * 60 * 1000;
-        const expiryDate = new Date(
-          new Date().getTime() + remainingMilliseconds
-        );
-        localStorage.setItem("expiryDate", expiryDate.toISOString());
-        
-    setCurrentUser(res.data.other);
+    setCurrentUser(res.data);
   };
 
   const logout = async (e) => {
