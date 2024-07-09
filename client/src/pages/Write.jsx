@@ -50,6 +50,9 @@ function Write() {
             // img: file ? imgUrl : "",
           },
           {
+            headers: {
+              "Content-Type": "application/json",
+            },
             withCredentials: true,
           }
         );
@@ -65,6 +68,9 @@ function Write() {
             date: moment().format("YYYY-MM-DD HH:mm:ss"),
           },
           {
+            headers: {
+              "Content-Type": "application/json",
+            },
             withCredentials: true,
           }
         );
