@@ -6,7 +6,7 @@ import { AuthContext, AuthContextProvider} from './context/authContext.jsx'
 
 // export const server = "http://localhost:8800/api"
 
-export const server = "https://blog-app-api-one.vercel.app/api"
+export const server = "https://blog-app-api-jet.vercel.app/api"
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
