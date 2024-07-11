@@ -45,10 +45,10 @@ const Single = () => {
     }
   };
 
-  const getText = (html) =>{
-    const doc = new  DOMParser().parseFromString(html, "text/html")
-    return doc.body.textContent
-  }
+  // const getText = (html) =>{
+  //   const doc = new  DOMParser().parseFromString(html, "text/html")
+  //   return doc.body.textContent
+  // }
   
   return (
     <div className="single">
@@ -70,7 +70,8 @@ const Single = () => {
           )}
         </div>
         <h1>{post.title}</h1>
-        <p>{getText(post.description)}</p>
+        {/* {<p>{getText(post.description)}</p>} */}
+        <p>{post.description}</p>
       </div>
       <Menu cat={post.cat}/>
     </div>
