@@ -374,6 +374,7 @@ $lightGreen: #b9e7e7;
           .buttons {
             display: flex;
             justify-content: space-between;
+            
 
             :first-child {
               cursor: pointer;
@@ -397,6 +398,10 @@ $lightGreen: #b9e7e7;
             align-items: center;
             gap: 2px;
             color: teal;
+
+            input{
+              cursor: pointer;
+            }
           }
         }
       }

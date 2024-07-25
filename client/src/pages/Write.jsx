@@ -7,11 +7,12 @@ import { server } from "../main";
 import { useLocation, useNavigate } from "react-router-dom";
 import moment from "moment";
 import Cookies from "js-cookie";
+import Swal from "sweetalert2";
 
 
 function Write() {
   const state = useLocation().state;
-  const [title, setTitle] = useState(state?.title || "");
+  const [title, setTitle] = useState(state?.title);
   const [value, setValue] = useState(state?.description || "");
   const [file, setFile] = useState(null);
   const [cat, setCat] = useState(state?.cat || "");
@@ -40,36 +41,49 @@ function Write() {
       const imgUrl = file ? await upload() : "";
       if (state) {
         // Update existing post using PUT
-        await axios.put(`${server}/posts/${state.id}`, {
-          title,
-          description: value,
-          cat,
-          img: file ? imgUrl : "",
-        },{
-          withCredentials: true,
-        });
+        await axios.put(
+          `${server}/posts/${state.id}`,
+          {
+            title,
+            description: value,
+            cat,
+            img: file ? imgUrl : "",
+          },
+          {
+            withCredentials: true,
+          }
+        );
       } else {
         // Create new post using POST
-        await axios.post(`${server}/posts/`, {
-          title,
-          description: value,
-          cat,
-          img: file ? imgUrl : "",
-          date: moment().format("YYYY-MM-DD HH:mm:ss"),
-        },{
-          withCredentials: true,
-        });
+        await axios.post(
+          `${server}/posts/`,
+          {
+            title,
+            description: value,
+            cat,
+            img: file ? imgUrl : "",
+            date: moment().format("YYYY-MM-DD HH:mm:ss"),
+          },
+          {
+            withCredentials: true,
+          }
+        );
       }
-      navigate("/")
+      navigate("/");
     } catch (err) {
-      // console.log("Upload failed", err);
-      if(err.response.status===401){
-        navigate("/login")
+
+      Swal.fire({
+        title: "Invalid title",
+        text: "Please write valid title",
+        icon: "error",
+        confirmButtonColor: '#008080',
+      });
+
+      if (err.response.status === 401) {
+        navigate("/login");
       }
     }
-
   };
-  
 
   //   console.log(value);
   return (
@@ -80,6 +94,7 @@ function Write() {
           placeholder="title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
+          required
         />
         <div className="editorContainer">
           <ReactQuill theme="snow" value={value} onChange={setValue} />
@@ -101,9 +116,8 @@ function Write() {
             id="file"
             onChange={(e) => setFile(e.target.files[0])}
           />
-          <label htmlFor="file">Upload Image</label>
           <div className="buttons">
-            <button>Save as a draft</button>
+            <label htmlFor="file">Upload Image</label>
             <button onClick={handleSubmit}>Publish</button>
           </div>
         </div>
@@ -111,6 +125,7 @@ function Write() {
           <h1>Category</h1>
           <div className="cat">
             <input
+              className="catName"
               type="radio"
               checked={cat === "art"}
               name="cat"
@@ -122,6 +137,7 @@ function Write() {
           </div>
           <div className="cat">
             <input
+            className="catName"
               type="radio"
               checked={cat === "science"}
               name="cat"
@@ -133,6 +149,7 @@ function Write() {
           </div>
           <div className="cat">
             <input
+            className="catName"
               type="radio"
               checked={cat === "technology"}
               name="cat"
@@ -144,6 +161,7 @@ function Write() {
           </div>
           <div className="cat">
             <input
+            className="catName"
               type="radio"
               checked={cat === "cinema"}
               name="cat"
@@ -155,6 +173,7 @@ function Write() {
           </div>
           <div className="cat">
             <input
+            className="catName"
               type="radio"
               checked={cat === "design"}
               name="cat"
@@ -166,6 +185,7 @@ function Write() {
           </div>
           <div className="cat">
             <input
+            className="catName"
               type="radio"
               checked={cat === "food"}
               name="cat"

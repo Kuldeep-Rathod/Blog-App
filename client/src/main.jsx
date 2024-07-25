@@ -4,9 +4,9 @@ import App from './App.jsx'
 import './index.css'
 import { AuthContext, AuthContextProvider} from './context/authContext.jsx'
 
-// export const server = "http://localhost:8800/api"
+export const server = "http://localhost:8800/api"
 
-export const server = "https://blog-app-api-ebcx.onrender.com"
+// export const server = "https://blog-app-api-69bx.onrender.com"
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

@@ -18,7 +18,8 @@
     "react-dom": "^18.2.0",
     "react-quill": "^2.0.0",
     "react-router-dom": "^6.23.1",
-    "sass": "^1.77.5"
+    "sass": "^1.77.5",
+    "sweetalert2": "^11.12.3"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",
