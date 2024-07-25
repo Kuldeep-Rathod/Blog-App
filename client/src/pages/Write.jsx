@@ -9,7 +9,6 @@ import moment from "moment";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
 
-
 function Write() {
   const state = useLocation().state;
   const [title, setTitle] = useState(state?.title);
@@ -68,15 +67,22 @@ function Write() {
             withCredentials: true,
           }
         );
+        Swal.fire({
+          icon: "success",
+          title: "Post Added!",
+          text: "Your post has been added successfully.",
+          showConfirmButton: false,
+          showCancelButton: false,
+          timer: 2000,
+        });
       }
       navigate("/");
     } catch (err) {
-
       Swal.fire({
         title: "Invalid title",
         text: "Please write valid title",
         icon: "error",
-        confirmButtonColor: '#008080',
+        confirmButtonColor: "#008080",
       });
 
       if (err.response.status === 401) {
@@ -137,7 +143,7 @@ function Write() {
           </div>
           <div className="cat">
             <input
-            className="catName"
+              className="catName"
               type="radio"
               checked={cat === "science"}
               name="cat"
@@ -149,7 +155,7 @@ function Write() {
           </div>
           <div className="cat">
             <input
-            className="catName"
+              className="catName"
               type="radio"
               checked={cat === "technology"}
               name="cat"
@@ -161,7 +167,7 @@ function Write() {
           </div>
           <div className="cat">
             <input
-            className="catName"
+              className="catName"
               type="radio"
               checked={cat === "cinema"}
               name="cat"
@@ -173,7 +179,7 @@ function Write() {
           </div>
           <div className="cat">
             <input
-            className="catName"
+              className="catName"
               type="radio"
               checked={cat === "design"}
               name="cat"
@@ -185,7 +191,7 @@ function Write() {
           </div>
           <div className="cat">
             <input
-            className="catName"
+              className="catName"
               type="radio"
               checked={cat === "food"}
               name="cat"
