@@ -3,6 +3,7 @@ import React, { useContext, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { server } from '../main';
 import { AuthContext } from '../context/authContext.jsx';
+import Swal from 'sweetalert2';
 
 
 function Login() {
@@ -25,14 +26,16 @@ function Login() {
 
     const handleSubmit = async e => {
         e.preventDefault()
-        try {
-            await login(inputs)
-            navigate("/");
-        }
-        catch (err) {
-            // console.log(err)
-            setError(err.response.data);
-        }
+        const isSuccess = await login(inputs);
+
+    if (isSuccess) {
+      // Navigate to home page on successful login
+      navigate("/");
+    } else {
+      // Set error message to be displayed on the login page
+      setError('Login failed. Please check your credentials and try again.');
+    }
+        
     };
 
     return (

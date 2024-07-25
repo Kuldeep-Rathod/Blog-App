@@ -79,7 +79,8 @@ $lightGreen: #b9e7e7;
 
         .logo {
           img {
-            width: 120px;
+            width: 100px;
+            height: 100px;
           }
         }
 
@@ -138,10 +139,10 @@ $lightGreen: #b9e7e7;
 
     .home {
       .posts {
-        margin-top: 50px;
+        margin-top: 20px;
         display: flex;
         flex-direction: column;
-        gap: 150px;
+        gap: 70px;
 
         .post {
           display: flex;

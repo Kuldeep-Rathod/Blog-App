@@ -34,6 +34,18 @@ function Write() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Check if title is empty
+    if (typeof title !== "string") {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Title cannot be empty!",
+        confirmButtonText: "OK",
+      });
+      return;
+    }
+
     // console.log(Cookies.get("access_token"))
     try {
       // Assuming 'upload' is an asynchronous function
@@ -77,18 +89,29 @@ function Write() {
         });
       }
       navigate("/");
-    } catch (err) {
-      Swal.fire({
-        title: "Invalid title",
-        text: "Please write valid title",
-        icon: "error",
-        confirmButtonColor: "#008080",
-      });
-
-      if (err.response.status === 401) {
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        // Unauthorized error
+        Swal.fire({
+          icon: "error",
+          title: "Unauthorized",
+          text: "You are not able to perform this action. Please log in.",
+          confirmButtonText: "OK",
+        });
         navigate("/login");
+      } else {
+        // Other errors
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Failed to submit form. Please try again.",
+          confirmButtonText: "OK",
+        });
       }
+      console.error("Error submitting form:", error);
     }
+
+    
   };
 
   //   console.log(value);

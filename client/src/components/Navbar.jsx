@@ -12,8 +12,9 @@ function Navbar() {
       <div className="navbar">
         <div className="container">
           <div className="logo">
-            <Link>
+            <Link to="/">
               <img src={Logo} alt="" />
+              {/* <h2>Blog App</h2> */}
             </Link>
           </div>
           <div className="links">

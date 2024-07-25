@@ -2,6 +2,7 @@ import { createContext, useEffect, useState } from "react";
 import { server } from "../main.jsx";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 export const AuthContext = createContext();
 
@@ -15,6 +16,7 @@ export const AuthContextProvider = ({ children }) => {
       const res = await axios.post(`${server}/auth/login`, inputs, {
         withCredentials: true,
       });
+      
 
       setCurrentUser(res.data);
 
@@ -27,6 +29,9 @@ export const AuthContextProvider = ({ children }) => {
         showCancelButton: false,
         timer: 1500,
       });
+
+      return true;
+      
     } catch (error) {
       console.error("Login failed:", error);
 
@@ -37,6 +42,8 @@ export const AuthContextProvider = ({ children }) => {
         icon: "error",
         confirmButtonColor: "#008080",
       });
+
+      return false;
     }
   };
 
