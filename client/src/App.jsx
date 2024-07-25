@@ -32,8 +32,8 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <>
       <Route path="/" element={<Layout />}>
-        <Route path='' element={<Home />} />
-        <Route path='post/:id' element={<Single />} />
+        <Route path='/' element={<Home />} />
+        <Route path='/:cat/post/:id' element={<Single />} />
         <Route path='/write' element={<Write />} />
       </Route>
 

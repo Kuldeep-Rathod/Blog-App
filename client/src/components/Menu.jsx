@@ -3,6 +3,9 @@ import React, { useEffect, useState } from "react";
 import { server } from "../main";
 import { Link } from "react-router-dom";
 
+const homeURL = import.meta.env.VITE_API_BASE_URL;
+
+
 const Menu = ({ cat }) => {
   const [posts, setPosts] = useState([]);
 
@@ -53,7 +56,7 @@ const Menu = ({ cat }) => {
       <h1>Other post's you may like</h1>
       {posts.map((posts) => (
         <div className="post" key={posts.id}>
-          <img src={`../upload/${posts?.img}`} alt="" />
+          <img src={`${homeURL}/upload/${posts?.img}`} alt="" />
           <h2>{posts.title}</h2>
           <Link className="link" to={`/post/${posts.id}`}>
             <button>Read more</button>

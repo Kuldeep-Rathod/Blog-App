@@ -5,3 +5,6 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
 })
+
+// config.js
+export const frontendBaseURL = process.env.REACT_APP_FRONTEND_BASE_URL;
