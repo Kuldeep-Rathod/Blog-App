@@ -3,7 +3,7 @@ import DataTable from "react-data-table-component";
 import axios from "axios";
 import { AuthContext } from "../context/authContext.jsx";
 import { server } from "../main.jsx";
-import './Profile.css'; // Import the CSS file
+import './Profile.css';
 import { Link, useNavigate } from "react-router-dom";
 
 function Profile() {
