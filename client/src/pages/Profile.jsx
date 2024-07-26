@@ -5,6 +5,8 @@ import { AuthContext } from "../context/authContext.jsx";
 import { server } from "../main.jsx";
 import './Profile.css'; // Import the CSS file
 
+const homeURL = import.meta.env.VITE_API_BASE_URL;
+
 // Define columns with class names for styling
 const columns = [
   {
@@ -13,21 +15,21 @@ const columns = [
     sortable: true,
     cell: (row) => <span className="title-cell">{row.title}</span>,
   },
-  {
-    name: "Description",
-    selector: (row) => row.description,
-    sortable: true,
-    cell: (row) => (
-      <span className="description-cell">
-        {row.description}
-      </span>
-    ),
-  },
+//   {
+//     name: "Description",
+//     selector: (row) => row.description,
+//     sortable: true,
+//     cell: (row) => (
+//       <span className="description-cell">
+//         {row.description}
+//       </span>
+//     ),
+//   },
   {
     name: "Image",
     selector: (row) => row.img,
     cell: (row) => (
-      <img src={row.img} alt={row.title} className="image-cell" />
+      <img src={`${homeURL}/upload/${row.img}`} alt={row.title} className="image-cell" />
     ),
   },
   {
@@ -48,6 +50,7 @@ const columns = [
     name: "Actions",
     cell: (row) => (
       <div className="actions-button">
+        <button className="edit" onClick={() => handleEdit(row.id)}>View</button>
         <button className="edit" onClick={() => handleEdit(row.id)}>Edit</button>
         <button className="delete" onClick={() => handleDelete(row.id)}>Delete</button>
       </div>

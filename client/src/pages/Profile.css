@@ -1,16 +1,18 @@
-/* Profile.css */
-
 .profile-container {
     padding: 20px;
     background-color: #f9f9f9;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow-x: auto; /* Ensure the container can handle overflow */
+    max-width: 100%; /* Make sure it doesn't exceed the viewport width */
 }
 
 .data-table {
     border: 1px solid #ddd;
     border-radius: 8px;
     overflow: hidden;
+    width: 100%; /* Ensure the table takes the full width of the container */
+    max-width: 100%; /* Prevents the table from exceeding the container width */
 }
 
 .data-table .rdt_TableHead {
@@ -25,6 +27,8 @@
 
 .data-table .rdt_TableBody {
     background-color: #fff;
+    /* display: flex;
+    gap: 10px; */
 }
 
 .data-table .rdt_TableRow {
@@ -37,7 +41,8 @@
 
 .data-table .rdt_TableCell {
     font-size: 14px;
-    padding: 10px;
+    padding: 10px 10px;
+    word-wrap: break-word; /* Ensure long words break to avoid overflow */
 }
 
 .data-table .rdt_TableCell img {
@@ -46,36 +51,15 @@
 }
 
 .data-table .description-cell {
-    max-width: 300px; /* Adjust based on your layout */
+    max-width: 150px; /* Adjust based on your layout */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     cursor: pointer;
 }
 
-.data-table .description-cell.expanded {
-    white-space: normal;
-}
-
-.data-table .description-cell .full-description {
-    display: none;
-}
-
-.data-table .description-cell.expanded .full-description {
-    display: block;
-}
-
-.data-table .description-cell .toggle-btn {
-    color: #007bff;
-    cursor: pointer;
-    margin-top: 5px;
-}
-
-.data-table .description-cell .toggle-btn:hover {
-    text-decoration: underline;
-}
-
 .data-table .actions-button {
+    width: 500px;
     display: flex;
     gap: 10px;
 }
