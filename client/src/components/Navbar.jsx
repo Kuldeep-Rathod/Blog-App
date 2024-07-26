@@ -37,7 +37,9 @@ function Navbar() {
               <h6>FOOD</h6>
             </Link>
 
-            <span>{currentUser?.username}</span>
+            <Link to="/profile">
+              <span>{currentUser?.username}</span>
+            </Link>
 
             {currentUser ? (
               <span onClick={(e) => logout(e)}>Logout</span>

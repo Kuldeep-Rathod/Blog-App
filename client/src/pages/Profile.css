@@ -1,0 +1,97 @@
+/* Profile.css */
+
+.profile-container {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.data-table {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.data-table .rdt_TableHead {
+    background-color: #e0e0e0;
+}
+
+.data-table .rdt_TableHead .rdt_TableCol {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}
+
+.data-table .rdt_TableBody {
+    background-color: #fff;
+}
+
+.data-table .rdt_TableRow {
+    border-bottom: 1px solid #ddd;
+}
+
+.data-table .rdt_TableRow:hover {
+    background-color: #f1f1f1;
+}
+
+.data-table .rdt_TableCell {
+    font-size: 14px;
+    padding: 10px;
+}
+
+.data-table .rdt_TableCell img {
+    width: 100px;
+    height: auto;
+}
+
+.data-table .description-cell {
+    max-width: 300px; /* Adjust based on your layout */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+}
+
+.data-table .description-cell.expanded {
+    white-space: normal;
+}
+
+.data-table .description-cell .full-description {
+    display: none;
+}
+
+.data-table .description-cell.expanded .full-description {
+    display: block;
+}
+
+.data-table .description-cell .toggle-btn {
+    color: #007bff;
+    cursor: pointer;
+    margin-top: 5px;
+}
+
+.data-table .description-cell .toggle-btn:hover {
+    text-decoration: underline;
+}
+
+.data-table .actions-button {
+    display: flex;
+    gap: 10px;
+}
+
+.data-table .actions-button button {
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+}
+
+.data-table .actions-button button.edit {
+    background-color: #ffc107;
+}
+
+.data-table .actions-button button.delete {
+    background-color: #dc3545;
+}

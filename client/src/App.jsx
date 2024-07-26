@@ -17,6 +17,7 @@ import Single from './pages/Single';
 import Write from './pages/Write';
 import Footer from './components/Footer';
 import "./style.scss";
+import Profile from './pages/Profile';
 
 const Layout = () => {
   return (
@@ -33,6 +34,7 @@ const router = createBrowserRouter(
     <>
       <Route path="/" element={<Layout />}>
         <Route path='/' element={<Home />} />
+        <Route path='/profile' element={<Profile />} />
         <Route path='/:cat/post/:id' element={<Single />} />
         <Route path='/write' element={<Write />} />
       </Route>
