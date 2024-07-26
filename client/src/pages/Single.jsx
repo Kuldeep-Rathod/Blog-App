@@ -8,7 +8,6 @@ import moment from "moment";
 import { AuthContext } from "../context/authContext.jsx";
 import { server } from "../main.jsx";
 
-const homeURL = import.meta.env.VITE_API_BASE_URL;
 
 const Single = () => {
   const [post, setPost] = useState([]);
@@ -56,7 +55,7 @@ const Single = () => {
   return (
     <div className="single">
       <div className="content">
-        <img src={`${homeURL}/upload/${post?.img}`} alt="" />
+        <img src={`/../upload/${post?.img}`} alt="" />
         <div className="user">
           {post.userImg && <img src={post.userImg} />}
           <div className="info">
@@ -65,8 +64,8 @@ const Single = () => {
           </div>
           {currentUser.username === post.username && (
             <div className="edit">
-              <Link to={`/write?edit=2`} state={post}>
-                <img src={Edit} alt="" />
+              <Link to={`/write?edit=${post.id}`} state={post}>
+                <img src={Edit} alt="Edit" />
               </Link>
               <img onClick={handleDelete} src={Delete} alt="" />
             </div>

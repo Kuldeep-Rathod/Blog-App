@@ -37,7 +37,7 @@ function Navbar() {
               <h6>FOOD</h6>
             </Link>
 
-            <Link to="/profile">
+            <Link to={`/profile/${currentUser?.username}`}>
               <span>{currentUser?.username}</span>
             </Link>
 

@@ -15,6 +15,10 @@
     max-width: 100%; /* Prevents the table from exceeding the container width */
 }
 
+.data-table::-webkit-scrollbar {
+    display: none; /* Hides the scroll bar in webkit browsers (Chrome, Safari) */
+  }    
+
 .data-table .rdt_TableHead {
     background-color: #e0e0e0;
 }
@@ -70,6 +74,10 @@
     border-radius: 4px;
     color: #fff;
     cursor: pointer;
+}
+
+.data-table .actions-button button.view {
+    background-color: rgb(34, 161, 161);
 }
 
 .data-table .actions-button button.edit {

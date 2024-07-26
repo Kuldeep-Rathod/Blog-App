@@ -2,26 +2,22 @@ import { createContext, useEffect, useState } from "react";
 import { server } from "../main.jsx";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
 
 export const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(
-    JSON.parse(localStorage.getItem("user") || null)
+    JSON.parse(localStorage.getItem("user")) || null
   );
-  // console.log(currentUser)
   const [currentUid, setCurrentUid] = useState(
-    JSON.parse(currentUser.id || null)
-  )
-  // console.log(currentUid);
+    currentUser?.id || null
+  );
 
   const login = async (inputs) => {
     try {
       const res = await axios.post(`${server}/auth/login`, inputs, {
         withCredentials: true,
       });
-      
 
       setCurrentUser(res.data);
 
@@ -36,7 +32,7 @@ export const AuthContextProvider = ({ children }) => {
       });
 
       return true;
-      
+
     } catch (error) {
       console.error("Login failed:", error);
 
@@ -83,6 +79,8 @@ export const AuthContextProvider = ({ children }) => {
 
           // Update the user state
           setCurrentUser(null);
+          setCurrentUid(null); // Ensure currentUid is also cleared
+          localStorage.removeItem("user"); // Remove user from local storage
         } else {
           // If not confirmed, show a cancellation message (optional)
           Swal.fire({
@@ -101,6 +99,8 @@ export const AuthContextProvider = ({ children }) => {
   };
 
   useEffect(() => {
+    // Update currentUid whenever currentUser changes
+    setCurrentUid(currentUser?.id || null);
     localStorage.setItem("user", JSON.stringify(currentUser));
   }, [currentUser]);
 
