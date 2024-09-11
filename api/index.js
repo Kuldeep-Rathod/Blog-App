@@ -14,7 +14,7 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: ["http://localhost:5173"] || "*", //we can give specific domain , that only take accept the request from that specific domain
+    origin: ["http://localhost:5173", "https://blog-app-five-steel.vercel.app" ] || "*", //we can give specific domain , that only take accept the request from that specific domain
     methods: ["GET", "PUT", "DELETE", "POST"],
     credentials: true, //for get header details like cookie...
   })
