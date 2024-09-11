@@ -14,11 +14,12 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://blog-app-five-steel.vercel.app" ] || "*", //we can give specific domain , that only take accept the request from that specific domain
+    origin: ["http://localhost:5173", "https://blog-app-five-steel.vercel.app", "https://blog-app-six-khaki.vercel.app"],
     methods: ["GET", "PUT", "DELETE", "POST"],
-    credentials: true, //for get header details like cookie...
+    credentials: true,
   })
-); //for deployment
+);
+ //for deployment
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
