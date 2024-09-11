@@ -46,13 +46,13 @@ const Home = () => {
         {posts.map((post) => (
           <div className="post" key={post.id}>
             <div className="img">
-              <Link className="link" to={`${post.cat}/post/${post.id}`}>
+              <Link className="link" to={`${post.cat}/post/${post.title}`}>
                 <img src={`./upload/${post.img}`} alt="" />
               </Link>
             </div>
 
             <div className="content">
-              <Link className="link" to={`${post.cat}/post/${post.id}`}>
+              <Link className="link" to={`${post.cat}/post/${post.title}`}>
                 <h1>{post.title}</h1>
               </Link>
               <p>{getText(post.description)}</p>
