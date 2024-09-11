@@ -14,11 +14,23 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://blog-app-five-steel.vercel.app", "https://blog-app-six-khaki.vercel.app"],
+    origin: function (origin, callback) {
+      const allowedOrigins = [
+        "http://localhost:5173",
+        "https://blog-app-five-steel.vercel.app",
+        "https://blog-app-six-khaki.vercel.app"
+      ];
+      if (allowedOrigins.includes(origin) || !origin) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     methods: ["GET", "PUT", "DELETE", "POST"],
     credentials: true,
   })
 );
+
  //for deployment
 
 const storage = multer.diskStorage({
