@@ -61,46 +61,58 @@ export const addPost = async (req, res) => {
 
   jwt.verify(token, "jwtkey", async (err, userInfo) => {
     if (err) {
+      console.error("Token verification error:", err);
       return res.status(403).json("Token is not valid!");
     }
 
-    // Handle file upload
-    let imgUrl = "";
-    console.log("fileeeeeeeeeeeeeeee: ", req.file.path);
-    if (req.file) {
-      try {
-        const localFilePath = req.file.path;
-        imgUrl = await uploadOnCloudinary(localFilePath);
+    // Verify that the user exists
+    db.query('SELECT id FROM users WHERE id = ?', [userInfo.id], async (userErr, userResults) => {
+      if (userErr) {
+        console.error("Error querying users table:", userErr);
+        return res.status(500).json({ error: "Error verifying user" });
+      }
 
-        // If Cloudinary upload fails, respond with error
-        if (!imgUrl) {
-          return res.status(500).json({ error: "Failed to upload image to Cloudinary" });
+      if (userResults.length === 0) {
+        return res.status(400).json({ error: "User does not exist" });
+      }
+
+      // Handle file upload
+      let imgUrl = "";
+      if (req.file) {
+        try {
+          const localFilePath = req.file.path;
+          imgUrl = await uploadOnCloudinary(localFilePath);
+
+          if (!imgUrl) {
+            return res.status(500).json({ error: "Failed to upload image to Cloudinary" });
+          }
+        } catch (uploadError) {
+          console.error("Error uploading file to Cloudinary:", uploadError);
+          return res.status(500).json({ error: "Error uploading file to Cloudinary" });
         }
-      } catch (uploadError) {
-        console.error("Error uploading file to Cloudinary:", uploadError);
-        return res.status(500).json({ error: "Error uploading file to Cloudinary" });
       }
-    }
 
-    const q = "INSERT INTO posts (`title`, `description`, `img`, `cat`, `date`, `uid`) VALUES (?)";
-    const values = [
-      req.body.title,
-      req.body.description,
-      imgUrl,
-      req.body.cat,
-      req.body.date,
-      userInfo.id,
-    ];
+      const q = "INSERT INTO posts (`title`, `description`, `img`, `cat`, `date`, `uid`) VALUES (?)";
+      const values = [
+        req.body.title,
+        req.body.description,
+        imgUrl,
+        req.body.cat,
+        req.body.date,
+        userInfo.id,
+      ];
 
-    db.query(q, [values], (err, data) => {
-      if (err) {
-        console.error("Database query error:", err);
-        return res.status(500).json({ error: "Database error occurred" });
-      }
-      return res.json("Post has been created.");
+      db.query(q, [values], (dbErr, data) => {
+        if (dbErr) {
+          console.error("Database query error:", dbErr);
+          return res.status(500).json({ error: "Database error occurred" });
+        }
+        return res.json("Post has been created.");
+      });
     });
   });
 };
+
 
 
 export const deletePost = (req, res) => {
