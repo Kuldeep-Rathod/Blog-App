@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import { db } from "../db.js";
+import uploadOnCloudinary from "../cloudinary.js";
 
 export const getPosts = (req, res) => {
   try {
@@ -51,25 +52,41 @@ export const getPost = (req, res) => {
   });
 };
 
-export const addPost = (req, res) => {
+export const addPost = async (req, res) => {
   const token = req.cookies.access_token;
-  // console.log(req.cookies)
+
   if (!token) {
     return res.status(401).json("Not authenticated user!");
   }
 
-  jwt.verify(token, "jwtkey", (err, userInfo) => {
+  jwt.verify(token, "jwtkey", async (err, userInfo) => {
     if (err) {
       return res.status(403).json("Token is not valid!");
     }
 
-    const q =
-      "INSERT INTO posts (`title`, `description`, `img`, `cat`, `date`, `uid`) VALUES (?)";
+    // Handle file upload
+    let imgUrl = "";
+    console.log("fileeeeeeeeeeeeeeee: ", req.file.path);
+    if (req.file) {
+      try {
+        const localFilePath = req.file.path;
+        imgUrl = await uploadOnCloudinary(localFilePath);
 
+        // If Cloudinary upload fails, respond with error
+        if (!imgUrl) {
+          return res.status(500).json({ error: "Failed to upload image to Cloudinary" });
+        }
+      } catch (uploadError) {
+        console.error("Error uploading file to Cloudinary:", uploadError);
+        return res.status(500).json({ error: "Error uploading file to Cloudinary" });
+      }
+    }
+
+    const q = "INSERT INTO posts (`title`, `description`, `img`, `cat`, `date`, `uid`) VALUES (?)";
     const values = [
       req.body.title,
       req.body.description,
-      req.body.img,
+      imgUrl,
       req.body.cat,
       req.body.date,
       userInfo.id,
@@ -78,12 +95,13 @@ export const addPost = (req, res) => {
     db.query(q, [values], (err, data) => {
       if (err) {
         console.error("Database query error:", err);
-        return res.status(500).send(err);
+        return res.status(500).json({ error: "Database error occurred" });
       }
-      return res.json("post has been created.");
+      return res.json("Post has been created.");
     });
   });
 };
+
 
 export const deletePost = (req, res) => {
   const token = req.cookies.access_token;
@@ -111,26 +129,37 @@ export const deletePost = (req, res) => {
   });
 };
 
-export const updatePost = (req, res) => {
+export const updatePost = async (req, res) => {
   const token = req.cookies.access_token;
 
   if (!token) {
     return res.status(401).json("Not authenticated user!");
   }
 
-  jwt.verify(token, "jwtkey", (err, userInfo) => {
+  jwt.verify(token, "jwtkey", async (err, userInfo) => {
     if (err) {
       return res.status(403).json("Token is not valid!");
     }
 
-    const postId = req.params.id
-    const q =
-      "UPDATE posts SET `title`=?, `description`=?, `img`=?, `cat`=? WHERE `id` = ? AND `uid` = ?";
+    const postId = req.params.id;
+    let imgUrl = req.body.imgUrl; // Existing image URL
 
+    // Handle file upload if a new file is provided
+    if (req.file) {
+      const localFilePath = req.file.path;
+      imgUrl = await uploadOnCloudinary(localFilePath);
+
+      // If Cloudinary upload fails, respond with error
+      if (!imgUrl) {
+        return res.status(500).json({ error: "Failed to upload image to Cloudinary" });
+      }
+    }
+
+    const q = "UPDATE posts SET `title`=?, `description`=?, `img`=?, `cat`=? WHERE `id` = ? AND `uid` = ?";
     const values = [
       req.body.title,
       req.body.description,
-      req.body.img,
+      imgUrl,
       req.body.cat,
     ];
 
@@ -139,7 +168,8 @@ export const updatePost = (req, res) => {
         console.error("Database query error:", err);
         return res.status(500).send(err);
       }
-      return res.json("post has been updated.");
+      return res.json("Post has been updated.");
     });
   });
 };
+
