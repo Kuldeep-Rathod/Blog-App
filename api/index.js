@@ -36,35 +36,6 @@ app.get("/", (req, res)=>{
   res.send("Welcome to my Blog App")
 })
 
-// app.post(`/api/upload`, upload.single("file"), async function (req, res) {
-//   try {
-//     // Ensure a file was uploaded
-//     if (!req.file) {
-//       return res.status(400).json({ error: "No file uploaded" });
-//     }
-
-//     const localFilePath = req.file.path;
-//     console.log("Uploaded file path: ", localFilePath);
-
-//     // Upload file to Cloudinary
-//     const imgUrl = await uploadOnCloudinary(localFilePath);
-
-//     // If Cloudinary upload fails, respond with error
-//     if (!imgUrl) {
-//       return res.status(500).json({ error: "Failed to upload image to Cloudinary" });
-//     }
-
-//     console.log("Cloudinary Image URL: ", imgUrl);
-
-//     // Send the Cloudinary URL as response
-//     res.status(200).json({ url: imgUrl });
-//   } catch (error) {
-//     console.error("Error uploading file: ", error);
-
-//     // Return a generic error response
-//     res.status(500).json({ error: "Internal server error during image upload" });
-//   }
-// });
 
 app.use("/api/auth", authRouter);
 app.use("/api/users", userRouter);
