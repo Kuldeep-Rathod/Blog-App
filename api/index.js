@@ -19,7 +19,6 @@ app.use(
         "http://localhost:5173",
         "https://blog-app-five-steel.vercel.app",
         "https://blog-app-six-khaki.vercel.app",
-        "https://blog-66rewpa3n-kuldeep-rathods-projects.vercel.app"
       ];
       if (allowedOrigins.includes(origin) || !origin) {
         callback(null, true);
